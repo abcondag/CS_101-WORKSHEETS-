@@ -1,0 +1,73 @@
+---
+title: "RWorksheet_Condag#4a"
+author: "Angel Blase"
+date: "2024-10-18"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Data Frame
+1. The table below shows the data about shoe size and height. Create a data frame.
+```{r}
+data <- data.frame(
+  Shoe_Size = c(6.5, 9.0, 8.5, 8.5, 10.5, 7.0, 9.5, 9.0, 13.0, 7.5, 10.5, 8.5, 12.0, 10.5, 13.0, 11.5, 8.5, 5.0, 10.0, 6.5, 7.5, 8.5, 10.5, 8.5, 10.5, 11.0, 9.0, 13.0),
+  Height = c(66.0, 68.0, 64.5, 65.0, 70.0, 64.0, 70.0, 71.0, 72.0, 64.0, 74.5, 67.0, 71.0, 71.0, 77.0, 72.0, 59.0, 62.0, 72.0, 66.0, 64.0, 67.0, 73.0, 69.0, 72.0, 70.0, 69.0, 70.0),
+  Gender = c("F", "F", "F", "F", "M", "F", "F", "F", "M", "F", "M", "F", "M", "M", "M", "M", "F", "F", "M", "F", "F", "M", "M", "F", "M", "M", "M", "M")
+)
+data
+```
+
+a. Describe the data: The dataset contains information about individuals' shoe sizes, heights, and gender. It shows a range of shoe sizes from 5.0 to 13.0 and heights from 59 to 77 inches, with both male and female entries, allowing for analysis of potential relationships between these variables.
+
+
+b. Create a subset by males and females with their corresponding shoe size and height.
+```{r}
+male <- subset(data, Gender == "M", select = c(Shoe_Size, Height))
+print("Male Data:")
+male
+
+female<- subset(data, Gender == "F", select = c(Shoe_Size, Height))
+print("Female Data:")
+female
+
+```
+
+c. Find the mean of shoe size and height of the respondents.
+```{r}
+shoeSize <- mean(data$Shoe_Size)
+shoeSize
+
+height <- mean(data$Height)
+height
+```
+
+d. Is there a relationship between shoe size and height? Why?
+    - Yes, people with taller heights are tend to have larger feet to support their body size which means that they have bigger shoe size compared to people who are not that tall.
+
+
+## Factors
+2. Construct character vector months to a factor with factor() and assign the result to factor_months_vector.
+```{r}
+months_vector <- c("March", "April", "January", "November", "January",
+                   "September", "October", "September", "November", "August",
+                   "January", "November", "November", "February", "May", "August",
+                   "July", "December", "August", "August", "September", "November",
+                   "February", "April")
+
+factor_months_vector <- factor(months_vector)
+factor_months_vector
+```
+
+3. Then check the summary() of the months_vector and factor_months_vector.
+```{r}
+summary(months_vector)
+summary(factor_months_vector)
+```
+Interpret the results of both vectors. Are they both equally useful in this case?
+
+    - The months_vector summary only shows the total number of items (24), without
+    telling how often each month appears. The factor_months_vector summary lists
+    each month and how many times it shows up. This makes the factor vector more
+    useful for understanding the data, while the character vector is less helpful.
