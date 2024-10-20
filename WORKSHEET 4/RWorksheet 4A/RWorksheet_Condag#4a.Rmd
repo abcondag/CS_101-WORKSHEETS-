@@ -92,7 +92,7 @@ stud_strategy
 
 ## Using Conditional Statements (IF-ELSE)
 6. Full Search
-```{r}
+```{r, eval=FALSE}
 input <- as.numeric(readline(prompt = "Select a number between 1 and 50: "))
 
 if (input < 1 || input > 50) {
@@ -107,7 +107,7 @@ if (input < 1 || input > 50) {
 7. Change
 
 a. Write a function that prints the minimum number of bills that must be paid, given the price of the snack.
-```{r}
+```{r, eval=FALSE}
 min_bills <- function(price) {
   bills <- c(1000, 500, 200, 100, 50)
   bill_count <- 0
@@ -198,4 +198,3 @@ for (i in 1:nrow(math_score)) {
   }
 }
 ```
-
