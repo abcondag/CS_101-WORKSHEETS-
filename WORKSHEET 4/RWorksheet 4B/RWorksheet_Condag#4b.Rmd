@@ -55,6 +55,8 @@ repeat {
 
 cat("\n")
 ```
+# Using Basic Graphics (plot(),barplot(),pie(),hist())
+
 4. Import the dataset
 
 a. What is the R script for importing an excel or a csv file? Display the first 6 rows of the dataset? Show your codes and its result.
@@ -65,8 +67,8 @@ head(shoeSize)
 
 b. Create a subset for gender(female and male). How many observations are there in Male? How about in Female? Write the R scripts and its output.
 ```{r}
-male <- subset(data, Gender == "M")
-female <- subset(data, Gender == "F")
+male <- subset(shoeSize, Gender == "M")
+female <- subset(shoeSize, Gender == "F")
 
 n_males <- nrow(male)
 n_females <- nrow(female)
@@ -77,7 +79,7 @@ n_females
 
 c. Create a graph for the number of males and females for Household Data. Use plot(),chart type = barplot. Make sure to place title, legends, and colors. Write the R scripts and its result.
 ```{r}
-genderCounts <- table(data$Gender)
+genderCounts <- table(shoeSize$Gender)
 
 barplot(genderCounts,
         main = "Number of Males and Females",
@@ -95,7 +97,7 @@ a. Create a piechart that will include labels in percentage.Add some colors and 
 expenses <- c(Food = 60, Electricity = 10, Savings = 5, Miscellaneous = 25)
 percentages <- round(expenses / sum(expenses) * 100)
 labels <- paste(names(expenses), percentages, "%")
-colors <- c("purple", "red", "green", "blue")
+colors <- c("pink", "purple", "yellow", "skyblue")
 pie(expenses,
     labels = labels,
     col = colors,
@@ -116,14 +118,63 @@ Description: The image shows the output of the str(iris) command in R, which pro
 b. Create an R object that will contain the mean of the sepal.length,
 sepal.width,petal.length,and petal.width. What is the R script and its result?
 ```{r}
-
+mean_values <- colMeans(iris[, c("Sepal.Length", "Sepal.Width", "Petal.Length", "Petal.Width")])
+mean_values
 ```
 
 c. Create a pie chart for the Species distribution. Add title, legends, and colors. Write the R script and its result.
+```{r}
+species_counts <- table(iris$Species)
+
+pie(species_counts, 
+    main = "Species Distribution in Iris Dataset",
+    col = c("skyblue", "pink", "lightgreen"),
+    labels = paste(names(species_counts), "-", species_counts))
+
+legend("topright", 
+       legend = names(species_counts), 
+       fill = c("skyblue", "pink", "lightgreen"), 
+       title = "Species"
+)
+
+```
 
 d. Subset the species into setosa, versicolor, and virginica. Write the R scripts and show the last six (6) rows of each species.
+```{r}
+setosa <- subset(iris, Species == "setosa")
+versicolor <- subset(iris, Species == "versicolor")
+virginica <- subset(iris, Species == "virginica")
+
+cat("Last 6 rows of Setosa:\n")
+print(tail(setosa, 6))
+
+cat("\nLast 6 rows of Versicolor:\n")
+print(tail(versicolor, 6))
+
+cat("\nLast 6 rows of Virginica:\n")
+print(tail(virginica, 6))
+```
 
 e. Create a scatterplot of the sepal.length and sepal.width using the different species(setosa,versicolor,virginica). Add a title = “Iris Dataset”, subtitle = “Sepal width and length, labels for the x and y axis, the pch symbol and colors should be based on the species.
+```{r}
+species_colors <- c("setosa" = "red", "versicolor" = "green", "virginica" = "blue")
+species_pch <- c("setosa" = 16, "versicolor" = 17, "virginica" = 18)
 
+plot(iris$Sepal.Length, iris$Sepal.Width,
+     main = "Iris Dataset",
+     sub = "Sepal width and length",
+     xlab = "Sepal Length",
+     ylab = "Sepal Width",
+     col = species_colors[iris$Species],
+     pch = species_pch[iris$Species])
 
-f. Interpret the result.
+legend("topright", legend = levels(iris$Species), 
+       col = species_colors, pch = species_pch, 
+       title = "Species")
+```
+
+f. Interpretation: The scatterplot shows the relationship between sepal length and sepal width for the three species in the iris dataset: Setosa, Versicolor, and Virginica. Each species is represented by a different color and symbol, making it easy to see how they differ. Setosa (red points) generally has a wider sepal width compared to its sepal length and is well-separated from the other two species. Versicolor (green points) and Virginica (blue points) have more overlap in their sepal sizes, but Virginica tends to have longer sepals. This pattern suggests that Setosa is more distinct in terms of sepal measurements, while Versicolor and Virginica are more similar.
+
+# Basic Cleaning and Transformation of Objects
+
+7. 
