@@ -85,13 +85,14 @@ Using the code ggplot(mpg, aes(model, manufacturer)) + geom_point() creates a sc
 b. The initial scatter plot created with ggplot(mpg, aes(model, manufacturer)) + geom_point() is not very useful because it displays a lot of overlapping points, making it hard to distinguish between different car models and their manufacturers. This clutter can obscure patterns and relationships in the data. To make the plot more informative, it could be enhanced by adding color to represent another variable, like the car class, which would provide more context. Additionally, adjusting the size of the points based on factors like highway miles per gallon would help convey more information.
 
 
-3. Plot the model and the year using ggplot(). Use only the top 20 observations. Write the codes and
-its results.
+3. Plot the model and the year using ggplot(). Use only the top 20 observations. Write the codes and its results.
 ```{r}
-top_20_models <- head(mpg, 20)
+library(ggplot2)
 
-ggplot(top_20_models, aes(x = model, y = year)) +
-  geom_point(color = "purple", size = 3) +
+top_20 <- head(mpg, 20)
+
+ggplot(top_20, aes(x = model, y = year)) +
+  geom_point(aes(color = class), size = 3) +
   labs(title = "Top 20 Car Models by Year",
        x = "Car Model",
        y = "Year") +
@@ -169,7 +170,6 @@ variables <- colnames(traffic)
 
 num_obs
 variables
-
 ```
 
 b. subset the traffic dataset into junctions. What is the R codes and its output?
@@ -183,14 +183,13 @@ traffic_by_junction
 
 c. Plot each junction in a using geom_line(). Show your solution and output.
 ```{r}
-ggplot(traffic, aes(x = DateTime, y = Vehicles, color = factor(Junction))) +
+ggplot(traffic, aes(x = DateTime, y = Vehicles, color = Junction)) +
   geom_line() +
   labs(title = "Traffic Count by Junction",
-       x = "Time",
-       y = "Traffic Count",
-       color = "Junction") +
+       x = "Date and Time",
+       y = "Number of vehicle") +
   theme_minimal() +
-  facet_wrap(~ Junction, scales = "free_y")
+  theme(legend.position = "right")
 ```
 
 7. From alexa_file.xlsx, import it to your environment
@@ -231,7 +230,11 @@ ggplot(var_totals, aes(x = variation, y = total, fill = variation)) +
 
 d. Plot a geom_line() with the date and the number of verified reviews. Complete the details of the graphs. Show your answer and solution.
 ```{r}
-ggplot(alexa, aes(x = date, y = verified_reviews)) +
+verified_reviews_summary <- alexa %>%
+  group_by(date) %>%
+  summarise(verified_reviews_count = n())
+
+ggplot(verified_reviews_summary, aes(x = date, y = verified_reviews_count)) +
   geom_line(color = "hotpink") +
   labs(title = "Number of Verified Reviews Over Time",
        x = "Date",
