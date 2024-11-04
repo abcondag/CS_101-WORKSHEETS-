@@ -176,11 +176,16 @@ f. Interpretation: The scatterplot shows the relationship between sepal length a
 
 # Basic Cleaning and Transformation of Objects
 7. Import the alexa-file.xlsx. Check on the variations. Notice that there are extra whitespaces among black variants (Black Dot, Black Plus, Black Show, Black Spot). Also on the white variants (White Dot, White Plus, White Show, White Spot).
+```{r}
+library(readxl)
+
+alexa_file <- read_excel("alexa_file.xlsx")
+
+head(alexa_file)
+```
 
 a. Rename the white and black variants by using gsub() function.
-```{r include graphics, echo=FALSE}
-library(knitr)
-
+```{r}
 alexa_file$variation <- gsub("Black  Dot", "BlackDot", alexa_file$variation)
 alexa_file$variation <- gsub("Black  Plus", "BlackPlus", alexa_file$variation)
 alexa_file$variation <- gsub("Black  Show", "BlackShow", alexa_file$variation)
@@ -192,17 +197,30 @@ alexa_file$variation <- gsub("White  Show", "WhiteShow", alexa_file$variation)
 alexa_file$variation <- gsub("White  Spot", "WhiteSpot", alexa_file$variation)
 
 alexa_file$variation[1051:1100]
-
+```
+Embed an image into Rmd.
+```{r}
 knitr::include_graphics("alexa_modified.png")
+
+values <- c(10, 5, 14)
+names <- c(4, 6, 8)
+colors <- c("red", "green", "blue")
+
+barplot(values, names.arg=names, col=colors, main="Change bar width", width=c(1, 0.5, 1.5))
+
+barplot(values, names.arg=names, col=colors, main="Change space between bars", space=c(0.2, 1, 0.5))
 ```
 
-b. b. Get the total number of each variations and save it into another object. Save the
+b. Get the total number of each variations and save it into another object. Save the
 object as variations.RData. Write the R scripts. What is its result?
 ```{r}
+library(dplyr)
+
 variation_counts <- alexa_file %>%
   count(variation)
 
 save(variation_counts, file = "variations.RData")
+variation_counts
 ```
 
 c. From the variations.RData, create a barplot(). Complete the details of the chart
@@ -210,30 +228,45 @@ which include the title, color, labels of each bar.
 ```{r}
 barplot(variation_counts$n,
         names.arg = variation_counts$variation,
-        col = "lightpink",
+        col = rainbow(length(variation_counts$variation)),
         main = "Total Variations",
         xlab = "Variations",
         ylab = "Count",
-        las = 2)  # las = 2 makes the labels perpendicular to the axis
+        las = 2)
 ```
 
 d. Create a barplot() for the black and white variations. Plot it in 1 frame, side by
 side. Complete the details of the chart.
 ```{r}
-black_variations <- variation_counts %>%
-  filter(grepl("Black", variation))
+library(dplyr)
 
-white_variations <- variation_counts %>%
+variation_counts <- alexa_file %>%
+  filter(grepl("Black|White", variation)) %>%
+  count(variation)
+
+black_counts <- variation_counts %>%
+  filter(grepl("Black", variation))
+white_counts <- variation_counts %>%
   filter(grepl("White", variation))
 
-combined_variations <- rbind(black_variations, white_variations)
+par(mfrow = c(1, 2))
 
-barplot(height = combined_variations$n,
-        names.arg = combined_variations$variation,
-        beside = TRUE,
-        col = c("black", "white"),
-        main = "Black and White Variations",
-        xlab = "Variations",
-        ylab = "Count",
-        legend.text = TRUE)
+variations <- variation_counts$variation
+counts <- variation_counts$n
+
+barplot(black_counts$n,
+        names.arg = black_counts$variation,
+        col = c("black", "pink", "green", "blue", "cyan"),
+        main = "Black Variants",
+        xlab = "Total Numbers",
+        ylab = "Variants",
+        ylim = c(0, max(black_counts$n) * 1.2))
+
+barplot(white_counts$n,
+        names.arg = white_counts$variation,
+        col = c("black", "pink", "green", "blue", "cyan"),
+        main = "White Variants",
+        xlab = "Total Numbers",
+        ylab = "Variants",
+        ylim = c(0, max(white_counts$n) * 1.2))
 ```
