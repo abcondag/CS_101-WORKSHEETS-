@@ -16,10 +16,7 @@ a. Show your solutions on how to import a csv file into the environment.
 mpg <- read.csv("mpg.csv")
 ```
 
-b. Among the 11 variables in the mpg dataset from the ggplot2 package, the categorical variables include manufacturer, model, year, cyl, trans, drv, fl, and class.
-
-
-c. While the continuous variables are displ, hwy, and cty.
+b-c. Among the 11 variables in the mpg dataset from the ggplot2 package, the categorical variables include manufacturer, model, year, cyl, trans, drv, fl, and class. While the continuous variables are displ, hwy, and cty.
 
 
 2. Which manufacturer has the most models in this data set? Which model has the most variations?
@@ -27,7 +24,6 @@ Show your answer.
 ```{r}
 library(ggplot2)
 library(dplyr)
-
 data(mpg)
 
 manufacturer_models <- summarise(group_by(mpg, manufacturer), unique_models = n_distinct(model))
@@ -39,7 +35,6 @@ model_variations <- summarise(group_by(mpg, model), variations = n())
 most_variations <- arrange(model_variations, desc(variations))
 most_variations <- slice(most_variations, 1)
 print(most_variations)
-
 ```
 
 a. Group the manufacturers and find the unique models. Show your codes and result.
@@ -115,7 +110,7 @@ a. Plot using geom_bar() using the top 20 observations only. The graphs shoudl h
 top_20_models <- model_counts %>% head(20)
 
 ggplot(top_20_models, aes(x = reorder(model, -num_cars), y = num_cars)) +
-  geom_bar(stat = "identity", fill = "plum") +
+  geom_bar(stat = "identity", aes(fill = model)) +
   labs(title = "Top 20 Car Models by Number of Cars",
        x = "Car Model",
        y = "Number of Cars") +
@@ -126,7 +121,7 @@ ggplot(top_20_models, aes(x = reorder(model, -num_cars), y = num_cars)) +
 b. Plot using the geom_bar() + coord_flip() just like what is shown below. Show codes and its result.
 ```{r}
 ggplot(top_20_models, aes(x = reorder(model, num_cars), y = num_cars)) +
-  geom_bar(stat = "identity", fill = "maroon") +
+  geom_bar(stat = "identity", aes(fill = model)) +
   labs(title = "Top 20 Car Models by Number of Cars",
        x = "Number of Cars",
        y = "Car Model") +
@@ -157,6 +152,8 @@ ggplot(mpg, aes(x = displ, y = hwy, color = cyl)) +
        color = "Number of Cylinders") +
   theme_minimal()
 ```
+Description: The color gradient shows city MPG (cty). Usually, cars with bigger engines (higher displacement) get lower fuel efficiency, meaning they have lower highway (hwy) and city (cty) MPG. In other words, bigger engines use more fuel, so they show lower MPG on highways. This pattern shows a negative relationship between engine size (displ) and fuel efficiency (hwy and cty).
+
 
 6. Import the traffic.csv onto your R environment.
 ```{r}
@@ -227,6 +224,8 @@ ggplot(var_totals, aes(x = variation, y = total, fill = variation)) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
+Observation: The bar chart shows counts of various product variations, but similar items like "Black Dot" and "Black  Dot" appear separately due to inconsistent labeling, likely caused by extra spaces or slight name differences. This duplication makes the chart look cluttered, especially with many similar "Black" and "White" variations. The angled labels improve readability, and the color coding helps distinguish each variation. However, cleaning the data to remove extra spaces and group similar labels would create a clearer, more accurate representation of the main categories.
+
 
 d. Plot a geom_line() with the date and the number of verified reviews. Complete the details of the graphs. Show your answer and solution.
 ```{r}
